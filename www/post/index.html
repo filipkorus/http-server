@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POST Request</title>
+
+    <style>
+        .container {
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px black dashed;
+        }
+    </style>
+</head>
+<body>
+    <h2>Send POST Request</h2>
+    <form id="postForm" class="container">
+        <label for="key1">Key 1:</label>
+        <input type="text" id="key1" name="key1" value="value1"><br><br>
+
+        <label for="key2">Key 2:</label>
+        <input type="text" id="key2" name="key2" value="value2"><br><br>
+
+        <label for="key3">Key 3:</label>
+        <input type="text" id="key3" name="key3" value="value3"><br><br>
+
+        <label for="format">Choose Data Format:</label>
+        <select id="format" name="format">
+            <option value="json">JSON</option>
+            <option value="x-www-form-urlencoded">x-www-form-urlencoded</option>
+            <!-- <option value="form-data">form-data</option> -->
+        </select><br><br>
+
+        <button type="button" onclick="sendPostRequest()">Send Request</button>
+    </form>
+
+    <br><br>
+
+    <h2>Response:</h2>
+    <div class="container" id="responseDiv"></div>
+
+    <script>
+        const form = document.querySelector('#postForm');
+        const responseDiv = document.querySelector('#responseDiv');
+
+        async function sendPostRequest() {
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            const format = formData.get('format');
+
+            responseDiv.innerHTML = '';
+
+            delete data.format; // remove format from form data
+
+            const url = 'http://localhost:8080';
+            const options = {
+                method: 'POST',
+                headers: {},
+            };
+
+            switch (format) {
+                case 'json':
+                    options.headers['Content-Type'] = 'application/json';
+                    options.body = JSON.stringify(data);
+                    break;
+                case 'x-www-form-urlencoded':
+                    options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+                    options.body = new URLSearchParams(data).toString();
+                    break;
+                case 'form-data':
+                    options.body = new FormData();
+                    for (const key in data) {
+                        options.body.append(key, data[key]);
+                    }
+                    break;
+                default:
+                    console.error('Invalid format selected');
+                    return;
+            }
+
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const result = await response.text();
+                responseDiv.innerHTML = result;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
