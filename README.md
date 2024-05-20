@@ -2,6 +2,7 @@
 author: [Filip Korus](https://github.com/filipkorus/)
 
 ### Functionalities
+- Every request is handled on a separate thread
 - Serving files from pre-defined directory (DOCUMENT_ROOT in [common.h](common.h))
 - Parsing headers of HTTP request
 - Directory browsing (for those directories where index.html file is not present)

@@ -202,6 +202,12 @@ void sendFile(int client_socket, const char *file_path) {
                     strcat(html_content, "\">");
                     strcat(html_content, entry->d_name);
                     strcat(html_content, "</a></li>");
+                } else if (entry->d_type == DT_DIR && strcmp(entry->d_name, ".") != 0) { // Directory except for "./"
+                    strcat(html_content, "<li><a href=\"");
+                    strcat(html_content, entry->d_name);
+                    strcat(html_content, "/\">");
+                    strcat(html_content, entry->d_name);
+                    strcat(html_content, "/</a></li>");
                 }
             }
             strcat(html_content, "</ul></body></html>");
