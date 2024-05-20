@@ -41,12 +41,8 @@ const char* getHeader(HttpHeaders *headers, const char *key) {
 
 void parseHeaders(HttpHeaders *headers, const char *buffer) {
     const char *line_start = buffer;
-    while (1) {
-        const char *line_end = strstr(line_start, "\r\n");
-        if (line_end == NULL) {
-            break;  // No more headers
-        }
-
+    const char *line_end;
+    while (line_end = strstr(line_start, "\r\n")) {
         // Calculate line length
         size_t line_length = line_end - line_start;
 
