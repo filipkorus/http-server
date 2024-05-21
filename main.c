@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include "common.h"
-#include "get.h"
-#include "post.h"
 
 int main() {
     int server_fd, client_socket; // variables for server file descriptor and client socket

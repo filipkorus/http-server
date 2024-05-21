@@ -74,10 +74,10 @@ void handlePOST(int client_socket, const char *url, const char *body, const Http
             strcat(text, entry);
         }
 
+        sendStatusCode200(client_socket, text);
+
         // Free allocated memory
         freeHttpBodyFields(fields, count);
-
-        sendStatusCode200(client_socket, text);
     } else {
         sendStatusCode400(client_socket);
     }

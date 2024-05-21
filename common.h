@@ -36,9 +36,9 @@ typedef struct {
 
 void initHeaders(HttpHeaders *headers);
 int addHeader(HttpHeaders *headers, const char *key, const char *value);
-const char* getHeader(HttpHeaders *headers, const char *key);
+const char* getHeader(const HttpHeaders *headers, const char *key);
 void parseHeaders(HttpHeaders *headers, const char *buffer);
-void printHeaders(HttpHeaders *headers);
+void printHeaders(const HttpHeaders *headers);
 
 void sendStatusCode200(int client_socket, const char *data);
 void sendStatusCode400(int client_socket);

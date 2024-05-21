@@ -1,5 +1,7 @@
 #include <dirent.h>
 #include "common.h"
+#include "get.h"
+#include "post.h"
 
 char *getHeadersBuffer(char buffer[BUFFER_SIZE]) {
     char *headers_buffer = strstr(buffer, "\r\n");
@@ -30,7 +32,7 @@ int addHeader(HttpHeaders *headers, const char *key, const char *value) {
     return 0;
 }
 
-const char* getHeader(HttpHeaders *headers, const char *key) {
+const char* getHeader(const HttpHeaders *headers, const char *key) {
     for (int i = 0; i < headers->count; i++) {
         if (strcmp(headers->headers[i].key, key) == 0) {
             return headers->headers[i].value;
@@ -42,7 +44,7 @@ const char* getHeader(HttpHeaders *headers, const char *key) {
 void parseHeaders(HttpHeaders *headers, const char *buffer) {
     const char *line_start = buffer;
     const char *line_end;
-    while (line_end = strstr(line_start, "\r\n")) {
+    while ((line_end = strstr(line_start, "\r\n"))) {
         // Calculate line length
         size_t line_length = line_end - line_start;
 
@@ -72,7 +74,7 @@ void parseHeaders(HttpHeaders *headers, const char *buffer) {
     }
 }
 
-void printHeaders(HttpHeaders *headers) {
+void printHeaders(const HttpHeaders *headers) {
     for (int i = 0; i < headers->count; i++) {
         printf("%s: %s\n", headers->headers[i].key, headers->headers[i].value);
     }
